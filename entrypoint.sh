@@ -36,6 +36,12 @@ else
     echo "警告: 数据库配置文件不存在: $DB_CONFIG_FILE"
 fi
 
+# 强制设置 runtime 目录权限
+mkdir -p /var/www/html/runtime
+chmod -R 777 /var/www/html/runtime
+chown -R www-data:www-data /var/www/html/runtime
+echo "Runtime 目录权限已设置为 777"
+
 echo "正在启动Apache..."
 # 启动Apache
 exec apache2-foreground
