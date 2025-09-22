@@ -36,16 +36,36 @@ else
     echo "警告: 数据库配置文件不存在: $DB_CONFIG_FILE"
 fi
 
-# 强制设置 CMS 安装所需权限
-echo "设置 CMS 目录权限..."
-mkdir -p /var/www/html/upload /var/www/html/runtime /var/www/html/application/extra
+# 创建 CMS 所需目录并设置权限
+echo "创建并设置 CMS 目录权限..."
+
+# 创建核心目录
+mkdir -p /var/www/html/upload \
+         /var/www/html/runtime \
+         /var/www/html/application/extra \
+         /var/www/html/application/data/backup \
+         /var/www/html/application/data/update
+
+# 设置权限（777 for writable directories/files, 666 for config files）
 chmod -R 777 /var/www/html/upload
 chmod -R 777 /var/www/html/runtime
 chmod -R 777 /var/www/html/application/extra
-chmod 666 /var/www/html/application/database.php
-chown -R www-data:www-data /var/www/html/{upload,runtime,application/extra,database.php}
-echo "权限设置完成: upload(777), runtime(777), extra(777), database.php(666)"
+chmod -R 777 /var/www/html/application/data
+chmod 666 /var/www/html/application/database.php  # 确保 config 可写
 
-echo "正在启动Apache..."
-# 启动Apache
+# 整体应用目录权限（默认 755，安全）
+chmod -R 755 /var/www/html/application
+chown -R www-data:www-data /var/www/html
+
+# 日志输出权限设置结果
+echo "权限设置完成:"
+echo "- upload: 777"
+echo "- runtime: 777"
+echo "- application/extra: 777"
+echo "- application/data/backup: 777"
+echo "- application/data/update: 777"
+echo "- database.php: 666"
+
+echo "正在启动 Apache..."
+# 启动 Apache
 exec apache2-foreground
