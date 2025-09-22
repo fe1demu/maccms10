@@ -36,11 +36,15 @@ else
     echo "警告: 数据库配置文件不存在: $DB_CONFIG_FILE"
 fi
 
-# 强制设置 runtime 目录权限
-mkdir -p /var/www/html/runtime
+# 强制设置 CMS 安装所需权限
+echo "设置 CMS 目录权限..."
+mkdir -p /var/www/html/upload /var/www/html/runtime /var/www/html/application/extra
+chmod -R 777 /var/www/html/upload
 chmod -R 777 /var/www/html/runtime
-chown -R www-data:www-data /var/www/html/runtime
-echo "Runtime 目录权限已设置为 777"
+chmod -R 777 /var/www/html/application/extra
+chmod 666 /var/www/html/application/database.php
+chown -R www-data:www-data /var/www/html/{upload,runtime,application/extra,database.php}
+echo "权限设置完成: upload(777), runtime(777), extra(777), database.php(666)"
 
 echo "正在启动Apache..."
 # 启动Apache
