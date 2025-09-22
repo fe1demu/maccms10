@@ -1,0 +1,15 @@
+.git
+.github
+*.md
+.gitignore
+Dockerfile
+.dockerignore
+node_modules
+.env
+.env.local
+.env.*.local
+logs
+*.log
+*.zip
+.DS_Store
+Thumbs.db
